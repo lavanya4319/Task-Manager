@@ -6,6 +6,7 @@ function Dashboard() {
   const [tasks, setTasks] = useState([]);
   const [title, setTitle] = useState("");
   const [error, setError] = useState("");
+  const [openOptions, setOpenOptions] = useState(null);
 
   const token = localStorage.getItem("token");
   const navigate = useNavigate();
@@ -64,6 +65,50 @@ function Dashboard() {
     }
   };
 
+  const deleteTask = async (taskId) => {
+    try {
+      await api.delete(`/api/tasks/${taskId}`, {
+        headers: {
+          Authorization: token,
+        },
+      });
+    } catch (err) {
+      console.warn("Delete API failed, removing locally", err?.message || err);
+    }
+
+    setTasks((prev) => prev.filter((task) => task._id !== taskId));
+    if (openOptions === taskId) {
+      setOpenOptions(null);
+    }
+  };
+
+  const editTask = async (task) => {
+    const newTitle = prompt("Edit task title", task.title);
+    if (!newTitle || newTitle.trim() === "") return;
+
+    const updatedTask = { ...task, title: newTitle.trim() };
+
+    try {
+      await api.put(
+        `/api/tasks/${task._id}`,
+        { title: updatedTask.title },
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      );
+    } catch (err) {
+      console.warn("Edit API failed, updating locally", err?.message || err);
+    }
+
+    setTasks((prev) => prev.map((item) => (item._id === task._id ? updatedTask : item)));
+  };
+
+  const toggleOptions = (taskId) => {
+    setOpenOptions((current) => (current === taskId ? null : taskId));
+  };
+
   return (
     <div className="page-container dashboard-page">
       <div className="card dashboard-card">
@@ -94,7 +139,31 @@ function Dashboard() {
           ) : (
             tasks.map((task) => (
               <div className="task-item" key={task._id}>
-                <h3>{task.title}</h3>
+                <div className="task-header">
+                  <h3>{task.title}</h3>
+                  <div className="task-actions">
+                    <button
+                      className="button task-action-button options-button"
+                      onClick={() => toggleOptions(task._id)}
+                    >
+                      Options
+                    </button>
+                  </div>
+                </div>
+
+                {openOptions === task._id && (
+                  <div className="task-options-box">
+                    <button className="button task-action-button" onClick={() => editTask(task)}>
+                      Edit
+                    </button>
+                    <button
+                      className="button task-action-button delete-button"
+                      onClick={() => deleteTask(task._id)}
+                    >
+                      Delete
+                    </button>
+                  </div>
+                )}
               </div>
             ))
           )}

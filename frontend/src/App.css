@@ -172,6 +172,55 @@
   background: linear-gradient(135deg, #16a34a 0%, #0ea5e9 100%);
 }
 
+.task-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.task-action-button {
+  padding: 0.65rem 0.85rem;
+  font-size: 0.9rem;
+  border-radius: 9999px;
+  border: none;
+  cursor: pointer;
+  background: #e2e8f0;
+  color: #0f172a;
+  transition: background 0.2s ease;
+}
+
+.task-action-button:hover {
+  background: #cbd5e1;
+}
+
+.delete-button {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.delete-button:hover {
+  background: #fecaca;
+}
+
+.options-button {
+  background: #e0f2fe;
+  color: #0c4a6e;
+}
+
+.options-button:hover {
+  background: #bae6fd;
+}
+
+.task-options-box {
+  margin-top: 1rem;
+  padding: 0.95rem 1rem;
+  border-radius: 14px;
+  background: #f8fafc;
+  border: 1px solid #cbd5e1;
+  color: #475569;
+}
+
 .task-list {
   display: grid;
   gap: 1rem;
