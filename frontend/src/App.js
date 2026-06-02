@@ -37,7 +37,7 @@ function App() {
     <div className="App">
       <BrowserRouter>
         <header className="navbar">
-          <div className="brand">Task Manage</div>
+          <div className="brand">Task Manager</div>
           <div className="nav-links">
             {!token && <Link to="/">Login</Link>}
             {!token && <Link to="/register">Register</Link>}
