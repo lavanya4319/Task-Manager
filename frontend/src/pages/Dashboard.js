@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import api from "../api";
 
 function Dashboard() {
   const [tasks, setTasks] = useState([]);
@@ -18,7 +18,7 @@ function Dashboard() {
 
     const fetchTasks = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/tasks", {
+        const res = await api.get("/api/tasks", {
           headers: {
             Authorization: token,
           },
@@ -40,8 +40,8 @@ function Dashboard() {
     }
 
     try {
-      await axios.post(
-        "http://localhost:5000/api/tasks",
+      await api.post(
+        "/api/tasks",
         { title },
         {
           headers: {
@@ -52,7 +52,7 @@ function Dashboard() {
       setTitle("");
       setError("");
 
-      const res = await axios.get("http://localhost:5000/api/tasks", {
+      const res = await api.get("/api/tasks", {
         headers: {
           Authorization: token,
         },
